@@ -1,5 +1,6 @@
 package com.gabriel.nogstock
 
+import org.springframework.boot.Banner
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
@@ -7,5 +8,7 @@ import org.springframework.boot.runApplication
 class NogstockApplication
 
 fun main(args: Array<String>) {
-    runApplication<NogstockApplication>(*args)
+    runApplication<NogstockApplication>(*args){
+        setBannerMode(Banner.Mode.OFF)
+    }
 }
