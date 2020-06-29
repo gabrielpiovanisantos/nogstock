@@ -9,6 +9,5 @@ class NogstockApplication
 
 fun main(args: Array<String>) {
     runApplication<NogstockApplication>(*args){
-        setBannerMode(Banner.Mode.OFF)
     }
 }

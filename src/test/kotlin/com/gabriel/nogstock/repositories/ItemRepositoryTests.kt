@@ -10,10 +10,11 @@ import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest
 import reactor.test.StepVerifier
 
 @DataMongoTest
-class ItemRepositoryTests {
+class ItemRepositoryTests (
+        @Autowired
+        var itemRepository: ItemRepository
+) {
 
-    @Autowired
-    lateinit var itemRepository: ItemRepository
 
     @BeforeAll
     fun setUp() {

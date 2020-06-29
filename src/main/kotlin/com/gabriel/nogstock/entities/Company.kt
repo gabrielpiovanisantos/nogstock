@@ -11,6 +11,7 @@ data class Company(
         val address: Address,
         val document: String,
         var user: User,
+        var itens : ArrayList<Item>,
         @CreatedDate val createdDate: LocalDateTime = LocalDateTime.now())
 {
     companion object {
