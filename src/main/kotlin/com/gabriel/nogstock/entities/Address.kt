@@ -12,7 +12,7 @@ data class Address(
         val city: String,
         val state: String,
         val number: Int,
-        val complement: String,
+        var complement: String = "",
         @CreatedDate val createdDate: LocalDateTime = LocalDateTime.now())
 {
     companion object {

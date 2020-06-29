@@ -10,11 +10,10 @@ import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest
 import reactor.test.StepVerifier
 
 @DataMongoTest
-class ItemRepositoryTests (
-        @Autowired
-        var itemRepository: ItemRepository
-) {
+class ItemRepositoryTests {
 
+    @Autowired
+    lateinit var itemRepository: ItemRepository
 
     @BeforeAll
     fun setUp() {
@@ -33,7 +32,7 @@ class ItemRepositoryTests (
         StepVerifier.create(itemRepository.findByName("arroz"))
                 .consumeNextWith {
                     run {
-                        print(it.toString())
+                        assertThat(it.name).isEqualTo("arroz")
                     }
                 }.verifyComplete()
 

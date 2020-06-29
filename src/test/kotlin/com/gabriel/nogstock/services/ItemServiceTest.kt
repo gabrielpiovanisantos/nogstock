@@ -1,16 +1,40 @@
 package com.gabriel.nogstock.services
 
-import org.junit.jupiter.api.Assertions.*
+import com.gabriel.nogstock.entities.Item
+import org.assertj.core.api.Assertions
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import reactor.test.StepVerifier
 
 @SpringBootTest
-class ItemServiceTest(
-        @Autowired
-        var itemService: ItemService
+class ItemServiceTest {
 
-) {
+    @Autowired
+    lateinit var itemService: ItemService
 
+    @BeforeAll
+    fun setUp() {
+        val item = Item(5, 10, "arroz")
+        itemService.save(item).then().block()
 
+    }
+
+    @AfterAll
+    fun tearDown() {
+        itemService.deleteAll()
+    }
+
+    @Test
+    fun `find diference between quantities`() {
+        StepVerifier.create(itemService.findByName("arroz"))
+                .consumeNextWith {
+                    run {
+                        Assertions.assertThat(itemService.findDifference(it)).isEqualTo(5)
+                    }
+                }.verifyComplete()
+    }
 
 }

@@ -6,6 +6,6 @@ import reactor.core.publisher.Mono
 
 interface UserRepository : ReactiveCrudRepository<User, String> {
 
-    fun findByName(name: String): Mono<User>
+    fun findByLastName(lastName: String): Mono<User>
 
 }
