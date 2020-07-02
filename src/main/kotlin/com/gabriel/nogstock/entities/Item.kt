@@ -10,7 +10,9 @@ data class Item(
         var currentQuantity: Int,
         val neededQuantity: Int,
         val name: String,
-        @CreatedDate val createdDate: LocalDateTime = LocalDateTime.now())
+        @CreatedDate val createdDate: LocalDateTime = LocalDateTime.now(),
+        val companyId: String?
+)
 {
     companion object {
         @Id

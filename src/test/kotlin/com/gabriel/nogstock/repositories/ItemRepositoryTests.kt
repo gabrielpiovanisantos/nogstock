@@ -15,9 +15,13 @@ class ItemRepositoryTests {
     @Autowired
     lateinit var itemRepository: ItemRepository
 
+    val companyId = "1"
+
     @BeforeAll
     fun setUp() {
-        itemRepository.save(Item(1, 5, "arroz")).
+        var itens = listOf<Item>(Item(1, 5, "arroz", companyId = companyId),
+                Item(5, 10, "feijao", companyId = companyId))
+        itemRepository.saveAll(itens).
         then().
         block()
     }
@@ -37,4 +41,14 @@ class ItemRepositoryTests {
                 }.verifyComplete()
 
     }
+
+    @Test
+    fun `find by company id`() {
+        val aux = itemRepository.findByCompanyId(companyId)
+        for(item in aux.toIterable()) {
+            println(item.toString())
+        }
+    }
+
+
 }

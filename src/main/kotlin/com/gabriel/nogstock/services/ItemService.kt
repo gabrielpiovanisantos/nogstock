@@ -14,9 +14,8 @@ class ItemService {
     lateinit var itemRepository: ItemRepository
 
     fun save(item: Item) : Mono<Item> = itemRepository.save(item)
-    fun deleteAll() = itemRepository.deleteAll()
     fun findByName(name: String) : Mono<Item> = itemRepository.findByName(name)
-    fun findDifference(item: Item): Int = abs(item.currentQuantity - item.neededQuantity)
+    fun findDifference(item: Item): Int = item.currentQuantity - item.neededQuantity
 
 
 }

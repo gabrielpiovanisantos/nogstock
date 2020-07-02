@@ -18,13 +18,11 @@ class UserRepositoryTests {
 
     @BeforeAll
     fun setUp() {
-        val address = Address("18081260", "gentil", "sorocaba", "sp",121)
+        val address = Address("18081260", "gentil", "sorocaba", "sp", 121)
         userRepository.save(User("Gabriel", "Santos", address,
                 "gabriel",
                 "senha")
-        ).
-        then().
-        block()
+        ).then().block()
     }
 
     @AfterAll
