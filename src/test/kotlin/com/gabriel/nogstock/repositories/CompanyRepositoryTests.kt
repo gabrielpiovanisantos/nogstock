@@ -1,46 +1,44 @@
 package com.gabriel.nogstock.repositories
 
 import com.gabriel.nogstock.entities.Address
+import com.gabriel.nogstock.entities.Company
 import com.gabriel.nogstock.entities.User
-import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest
-import org.springframework.boot.test.context.SpringBootTest
 import reactor.test.StepVerifier
 
 @DataMongoTest
-class UserRepositoryTests {
+class CompanyRepositoryTests {
 
     @Autowired
-    lateinit var userRepository: UserRepository
+    lateinit var companyRepository: CompanyRepository
 
     @BeforeAll
     fun setUp() {
         val address = Address("18081260", "gentil", "sorocaba", "sp", 121)
-        userRepository.save(User("Gabriel", "Santos","4325435435", address,
+        val user = User("Gabriel", "Santos", "23214543534", address,
                 "gabriel",
                 "senha")
-        ).then().block()
+        val company = Company("test", address, "210381280", user)
+        companyRepository.save(company).then().block()
     }
 
     @AfterAll
     fun tearDown() {
-        userRepository.deleteAll().then().block()
+        companyRepository.deleteAll().then().block()
     }
 
     @Test
-    fun `find by last name`() {
-        StepVerifier.create(userRepository.findByLastName("Santos"))
+    fun `find by name`() {
+        StepVerifier.create(companyRepository.findByName("test"))
                 .consumeNextWith {
                     run {
-                        assertThat(it.firstName).isEqualTo("Gabriel")
+                        Assertions.assertThat(it.name).isEqualTo("test")
                     }
                 }.verifyComplete()
-
     }
-
-
 }

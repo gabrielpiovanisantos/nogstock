@@ -19,9 +19,9 @@ class ItemRepositoryTests {
 
     @BeforeAll
     fun setUp() {
-        var itens = listOf<Item>(Item(1, 5, "arroz", companyId = companyId),
+        val items = listOf(Item(1, 5, "arroz", companyId = companyId),
                 Item(5, 10, "feijao", companyId = companyId))
-        itemRepository.saveAll(itens).
+        itemRepository.saveAll(items).
         then().
         block()
     }
@@ -44,8 +44,8 @@ class ItemRepositoryTests {
 
     @Test
     fun `find by company id`() {
-        val aux = itemRepository.findByCompanyId(companyId)
-        for(item in aux.toIterable()) {
+        val items = itemRepository.findByCompanyId(companyId)
+        for(item in items.toIterable()) {
             println(item.toString())
         }
     }

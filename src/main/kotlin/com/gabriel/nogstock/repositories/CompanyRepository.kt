@@ -7,5 +7,6 @@ import reactor.core.publisher.Mono
 interface CompanyRepository : ReactiveCrudRepository<Company, String> {
 
     fun findByName(name: String) : Mono<Company>
+    fun findByDocument(document: String): Mono<Company>
 
 }

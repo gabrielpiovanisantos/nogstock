@@ -8,5 +8,6 @@ interface UserRepository : ReactiveCrudRepository<User, String> {
 
     fun findByLastName(lastName: String): Mono<User>
     fun findByLogin(login: String): Mono<User>
+    fun findByDocument(document: String): Mono<User>
 
 }

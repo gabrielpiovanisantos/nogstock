@@ -9,6 +9,7 @@ import java.time.LocalDateTime
 data class User(
         val firstName: String,
         val lastName: String,
+        val document: String,
         var address: Address,
         var login: String,
         var password: String,

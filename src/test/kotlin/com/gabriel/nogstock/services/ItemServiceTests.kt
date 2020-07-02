@@ -24,15 +24,15 @@ class ItemServiceTests {
 
     @AfterAll
     fun tearDown() {
-        itemService.itemRepository.deleteAll()
+        itemService.itemRepository.deleteAll().then().block()
     }
 
     @Test
-    fun `find diference between quantities`() {
+    fun `find difference between quantities`() {
         StepVerifier.create(itemService.findByName("arroz"))
                 .consumeNextWith {
                     run {
-                        Assertions.assertThat(itemService.findDifference(it)).isEqualTo(5)
+                        Assertions.assertThat(itemService.findDifference(it)).isEqualTo(-5)
                     }
                 }.verifyComplete()
     }
