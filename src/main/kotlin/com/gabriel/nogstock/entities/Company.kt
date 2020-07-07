@@ -10,7 +10,7 @@ data class Company(
         val name: String,
         val address: Address,
         val document: String,
-        var user: User,
+        var userId: String,
         @CreatedDate val createdDate: LocalDateTime = LocalDateTime.now())
 {
     companion object {

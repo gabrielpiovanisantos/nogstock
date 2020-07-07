@@ -9,6 +9,7 @@ import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import reactor.kotlin.test.test
 import reactor.test.StepVerifier
 
 @SpringBootTest
@@ -26,7 +27,7 @@ class CompanyServiceTests {
         val user = User("Gabriel", "Santos", "23214543534", address,
                 "gabriel",
                 "senha")
-        val company = Company("test", address, "210381280", user)
+        val company = Company("test", address, "210381280", "1")
         companyService.save(company).then().block()
     }
 
@@ -39,25 +40,22 @@ class CompanyServiceTests {
     @Test
     fun `find by name`() {
         val name = "test"
-        StepVerifier.create(companyService.findByName(name))
+        companyService.findByName(name).test()
                 .consumeNextWith {
                     run {
-                        Assertions.assertThat(it.name).isEqualTo(name)
+                        Assertions.assertThat(it.name).isEqualTo("test")
                     }
                 }.verifyComplete()
     }
 
-    @Test
-    fun `verify two identical documents`() {
-        val address = Address("18081260", "gentil", "sorocaba", "sp", 121)
-        val user = User("Gabriel", "Santos", "23214543534", address,
-                "gabriel",
-                "senha")
-        val company = Company("test", address, "210381280", user)
-        val exception = assertThrows<Exception>("Should throw an exception") {
-            companyService.save(company)
-        }
-        assertEquals("the document must be unique", exception.message)
-    }
+
+@Test
+fun `verify two identical documents`() {
+    val address = Address("18081260", "gentil", "sorocaba", "sp", 121)
+    val company = Company("test", address, "210381280", "1")
+    val exception = companyService.save(company)
+
+    assertEquals("the document must be unique", exception.subscribe())
+}
 
 }

@@ -14,6 +14,7 @@ class CompanyService {
     lateinit var companyRepository: CompanyRepository
 
     fun save(company: Company): Mono<Company> {
+        //TODO try to avoid the block() method because its breaks the reactiveness
         val verifyCompanyDocument = companyRepository.findByDocument(company.document)
         val blockedCompanyDocument = verifyCompanyDocument.block()
         if (blockedCompanyDocument != null && blockedCompanyDocument.document == company.document) throw Exception("the document must be unique")

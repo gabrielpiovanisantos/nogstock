@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest
 import reactor.test.StepVerifier
+import reactor.kotlin.core.publisher.toFlux
+import reactor.kotlin.test.test
 
 @DataMongoTest
 class CompanyRepositoryTests {
@@ -23,7 +25,7 @@ class CompanyRepositoryTests {
         val user = User("Gabriel", "Santos", "23214543534", address,
                 "gabriel",
                 "senha")
-        val company = Company("test", address, "210381280", user)
+        val company = Company("test", address, "210381280", "1")
         companyRepository.save(company).then().block()
     }
 
@@ -34,7 +36,7 @@ class CompanyRepositoryTests {
 
     @Test
     fun `find by name`() {
-        StepVerifier.create(companyRepository.findByName("test"))
+        companyRepository.findByName("test").test()
                 .consumeNextWith {
                     run {
                         Assertions.assertThat(it.name).isEqualTo("test")
