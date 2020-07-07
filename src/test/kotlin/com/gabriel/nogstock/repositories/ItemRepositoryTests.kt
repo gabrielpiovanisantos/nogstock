@@ -15,12 +15,12 @@ class ItemRepositoryTests {
     @Autowired
     lateinit var itemRepository: ItemRepository
 
-    val companyId = "1"
+    private val companyId = "1"
 
     @BeforeAll
     fun setUp() {
-        val items = listOf(Item(1, 5, "arroz", companyId = companyId),
-                Item(5, 10, "feijao", companyId = companyId))
+        val items = listOf(Item(1, 5, "rice", companyId = companyId),
+                Item(5, 10, "bean", companyId = companyId))
         itemRepository.saveAll(items).
         then().
         block()
@@ -33,10 +33,10 @@ class ItemRepositoryTests {
 
     @Test
     fun `find by name`() {
-        StepVerifier.create(itemRepository.findByName("arroz"))
+        StepVerifier.create(itemRepository.findByName("rice"))
                 .consumeNextWith {
                     run {
-                        assertThat(it.name).isEqualTo("arroz")
+                        assertThat(it.name).isEqualTo("rice")
                     }
                 }.verifyComplete()
 

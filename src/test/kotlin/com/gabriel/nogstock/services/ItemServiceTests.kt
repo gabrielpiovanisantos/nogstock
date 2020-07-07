@@ -17,7 +17,7 @@ class ItemServiceTests {
 
     @BeforeAll
     fun setUp() {
-        val item = Item(5, 10, "arroz", companyId = null)
+        val item = Item(5, 10, "rice", companyId = null)
         itemService.save(item).then().block()
 
     }
@@ -29,7 +29,7 @@ class ItemServiceTests {
 
     @Test
     fun `find difference between quantities`() {
-        StepVerifier.create(itemService.findByName("arroz"))
+        StepVerifier.create(itemService.findByName("rice"))
                 .consumeNextWith {
                     run {
                         Assertions.assertThat(itemService.findDifference(it)).isEqualTo(-5)
