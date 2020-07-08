@@ -24,9 +24,6 @@ class CompanyServiceTests {
     @BeforeAll
     fun setUp() {
         val address = Address("18081260", "gentil", "sorocaba", "sp", 121)
-        val user = User("Gabriel", "Santos", "23214543534", address,
-                "gabriel",
-                "senha")
         val company = Company("test", address, "210381280", "1")
         companyService.save(company).then().block()
     }
@@ -49,13 +46,14 @@ class CompanyServiceTests {
     }
 
 
-@Test
-fun `verify two identical documents`() {
-    val address = Address("18081260", "gentil", "sorocaba", "sp", 121)
-    val company = Company("test", address, "210381280", "1")
-    val exception = companyService.save(company)
-
-    assertEquals("the document must be unique", exception.subscribe())
-}
+    @Test
+    fun `verify two identical documents`() {
+        val address = Address("18081260", "gentil", "sorocaba", "sp", 121)
+        val company = Company("test", address, "210381280", "1")
+        val exception = assertThrows<Exception>("Should throw an exception") {
+            companyService.save(company)
+        }
+        assertEquals("the document must be unique", exception.message)
+    }
 
 }
