@@ -13,10 +13,6 @@ data class User(
         var address: Address,
         var login: String,
         var password: String,
-        @CreatedDate val createdDate: LocalDateTime = LocalDateTime.now())
-{
-    companion object {
-        @Id
-        val Id: String? = null
-    }
-}
+        @CreatedDate val createdDate: LocalDateTime = LocalDateTime.now(),
+        @Id val id: String? = null
+)

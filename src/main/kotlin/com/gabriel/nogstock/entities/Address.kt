@@ -12,11 +12,5 @@ data class Address(
         val city: String,
         val state: String,
         val number: Int,
-        var complement: String = "",
-        @CreatedDate val createdDate: LocalDateTime = LocalDateTime.now())
-{
-    companion object {
-        @Id
-        val Id: String? = null
-    }
-}
+        var complement: String? = null
+)

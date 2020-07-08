@@ -11,11 +11,6 @@ data class Item(
         val neededQuantity: Int,
         val name: String,
         @CreatedDate val createdDate: LocalDateTime = LocalDateTime.now(),
-        val companyId: String?
+        val companyId: String? = null,
+        @Id val id: String? = null
 )
-{
-    companion object {
-        @Id
-        val Id: String? = null
-    }
-}
