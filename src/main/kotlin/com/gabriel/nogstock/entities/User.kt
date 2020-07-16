@@ -11,6 +11,8 @@ data class User(
         val lastName: String,
         val document: String,
         var address: Address,
+        var phone: String,
+        var email: String,
         var login: String,
         var password: String,
         @CreatedDate val createdDate: LocalDateTime = LocalDateTime.now(),

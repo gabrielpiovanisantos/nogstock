@@ -5,25 +5,22 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest
 import reactor.test.StepVerifier
 
 @DataMongoTest
-class ItemRepositoryTests {
+class ItemRepositoryTests(
+        private val itemRepository: ItemRepository,
+        private val companyId: String = "1"
 
-    @Autowired
-    lateinit var itemRepository: ItemRepository
+) {
 
-    private val companyId = "1"
 
     @BeforeAll
     fun setUp() {
         val items = listOf(Item(1, 5, "rice", companyId = companyId),
                 Item(5, 10, "bean", companyId = companyId))
-        itemRepository.saveAll(items).
-        then().
-        block()
+        itemRepository.saveAll(items).then().block()
     }
 
     @AfterAll
@@ -45,7 +42,7 @@ class ItemRepositoryTests {
     @Test
     fun `find by company id`() {
         val items = itemRepository.findByCompanyId(companyId)
-        for(item in items.toIterable()) {
+        for (item in items.toIterable()) {
             println(item.toString())
         }
     }

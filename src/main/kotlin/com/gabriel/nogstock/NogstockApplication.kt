@@ -8,6 +8,6 @@ import org.springframework.boot.runApplication
 class NogstockApplication
 
 fun main(args: Array<String>) {
-    runApplication<NogstockApplication>(*args){
+    runApplication<NogstockApplication>(*args) {
     }
 }

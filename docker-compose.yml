@@ -1,0 +1,16 @@
+version: '3.1'
+services:
+  spring:
+    build: . --build-arg JAR_FILE=build/libs/*.jar
+    ports:
+    - 8080:8080
+    depends_on:
+      - mongo
+  mongo:
+    image: mongo:3.6
+    restart: always
+    environment:
+    volumes:
+      - $MONGO_HOME/data/nogstock:/data/db
+    ports:
+      - 27003:27017

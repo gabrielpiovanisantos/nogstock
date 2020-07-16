@@ -8,10 +8,11 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 @Service
-class CompanyService {
+class CompanyService(
+        val companyRepository: CompanyRepository
 
-    @Autowired
-    lateinit var companyRepository: CompanyRepository
+) {
+
 
     fun save(company: Company): Mono<Company> {
         //TODO try to avoid the block() method because its breaks the reactiveness

@@ -7,10 +7,10 @@ import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 
 @Service
-class UserService {
+class UserService(
+        val userRepository: UserRepository
+) {
 
-    @Autowired
-    lateinit var userRepository: UserRepository
 
     fun save(user: User): Mono<User> {
 //        val verifyUserLogin = userRepository.findByLogin(user.login)
@@ -22,6 +22,8 @@ class UserService {
         return userRepository.save(user)
 
     }
+
+    fun getById(id: String): Mono<User> = userRepository.findById(id)
 
     fun findByLogin(login: String): Mono<User> = userRepository.findByLogin(login)
 

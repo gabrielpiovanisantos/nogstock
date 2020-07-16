@@ -7,22 +7,22 @@ import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest
-import reactor.test.StepVerifier
-import reactor.kotlin.core.publisher.toFlux
 import reactor.kotlin.test.test
 
 @DataMongoTest
-class CompanyRepositoryTests {
+class CompanyRepositoryTests(
+        private val companyRepository: CompanyRepository
 
-    @Autowired
-    lateinit var companyRepository: CompanyRepository
+) {
+
 
     @BeforeAll
     fun setUp() {
         val address = Address("18081260", "gentil", "sorocaba", "sp", 121)
         val user = User("Gabriel", "Santos", "23214543534", address,
+                "3424232355",
+                "gabriel@teste.com",
                 "gabriel",
                 "senha")
         val company = Company("test", address, "210381280", "1")

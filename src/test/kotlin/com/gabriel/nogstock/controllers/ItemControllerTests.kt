@@ -3,16 +3,17 @@ package com.gabriel.nogstock.controllers
 import com.gabriel.nogstock.entities.Item
 import com.gabriel.nogstock.repositories.ItemRepository
 import org.junit.jupiter.api.Test
+import org.mockito.BDDMockito
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
 import org.springframework.boot.test.mock.mockito.MockBean
-import org.springframework.data.mongodb.core.ReactiveMongoOperations
 import org.springframework.http.MediaType
+import org.springframework.test.web.reactive.server.EntityExchangeResult
 import org.springframework.test.web.reactive.server.WebTestClient
-import org.springframework.test.web.reactive.server.body
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
+
 
 @WebFluxTest(ItemController::class)
 class ItemControllerTests {
@@ -45,14 +46,16 @@ class ItemControllerTests {
     @Test
     fun `insert new item`() {
         val item = Item(1, 5, "rice", companyId = "1")
+        BDDMockito.given(itemRepository.findByName("rice")).willReturn(Mono.just(item))
 
-        client.post().uri("http://localhost:8080/items")
+
+        this.client.post().uri("/items/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .body(Mono.just(item), Item::class.java)
+                .body(Mono.just<Any>(item), Item::class.java)
                 .exchange()
                 .expectBody()
-                .jsonPath("@.[0].name").isEqualTo("rice")
+                .consumeWith { x: EntityExchangeResult<ByteArray?>? -> println(x) }
 
     }
 }
