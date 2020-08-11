@@ -7,14 +7,14 @@ import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest
 import reactor.kotlin.test.test
 
 @DataMongoTest
-class CompanyRepositoryTests(
-        private val companyRepository: CompanyRepository
-
-) {
+class CompanyRepositoryTests {
+    @Autowired
+    lateinit var companyRepository: CompanyRepository
 
 
     @BeforeAll

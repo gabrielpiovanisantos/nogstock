@@ -5,14 +5,15 @@ import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import reactor.test.StepVerifier
 
 @SpringBootTest
-class ItemServiceTests(
-        val itemService: ItemService
+class ItemServiceTests {
 
-) {
+    @Autowired
+    lateinit var itemService: ItemService
 
 
     @BeforeAll

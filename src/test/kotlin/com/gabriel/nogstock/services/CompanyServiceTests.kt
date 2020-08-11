@@ -6,16 +6,18 @@ import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import reactor.kotlin.test.test
 
 @SpringBootTest
-class CompanyServiceTests(
-        val companyService: CompanyService,
-        val userService: UserService
+class CompanyServiceTests {
 
-) {
+    @Autowired
+    lateinit var companyService: CompanyService
 
+    @Autowired
+    lateinit var userService: UserService
 
     @BeforeAll
     fun setUp() {

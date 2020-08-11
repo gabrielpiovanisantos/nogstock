@@ -5,17 +5,16 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest
 import reactor.test.StepVerifier
 
 @DataMongoTest
-class ItemRepositoryTests(
-        private val itemRepository: ItemRepository,
-        private val companyId: String = "1"
+class ItemRepositoryTests {
 
-) {
-
-
+    @Autowired
+    lateinit var itemRepository: ItemRepository
+    private val companyId: String = "1"
     @BeforeAll
     fun setUp() {
         val items = listOf(Item(1, 5, "rice", companyId = companyId),
