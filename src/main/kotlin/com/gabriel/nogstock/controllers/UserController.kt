@@ -18,11 +18,11 @@ class UserController(
 //    @Autowired
 //    lateinit var UserRepository: UserRepository
 
-    @GetMapping("{login}")
-    fun getByLogin(@PathVariable login: String): Mono<User> = userService.findByLogin(login)
+    @GetMapping()
+    fun getByLogin(@RequestParam login: String): Mono<User> = userService.findByLogin(login)
 
     @GetMapping("{id}")
-    fun getById(@PathVariable id: String): Mono<User> = userService.findByLogin(id)
+    fun getById(@PathVariable id: String): Mono<User> = userService.getById(id)
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

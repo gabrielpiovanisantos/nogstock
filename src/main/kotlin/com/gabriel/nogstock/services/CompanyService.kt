@@ -2,9 +2,7 @@ package com.gabriel.nogstock.services
 
 import com.gabriel.nogstock.entities.Company
 import com.gabriel.nogstock.repositories.CompanyRepository
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 @Service
@@ -23,5 +21,6 @@ class CompanyService(
     }
 
     fun findByName(name: String): Mono<Company> = companyRepository.findByName(name)
+    fun findById(id: String): Mono<Company> = companyRepository.findById(id)
 
 }

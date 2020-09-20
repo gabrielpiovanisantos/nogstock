@@ -14,8 +14,11 @@ class CompanyController(
 ) {
 
 
-    @GetMapping("{name}")
-    fun findByName(@PathVariable name: String): Mono<Company> = companyService.findByName(name)
+    @GetMapping("")
+    fun findByName(@RequestParam name: String): Mono<Company> = companyService.findByName(name)
+
+    @GetMapping("{id}")
+    fun findById(@PathVariable id: String): Mono<Company> = companyService.findById(id)
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
