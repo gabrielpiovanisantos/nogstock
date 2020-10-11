@@ -20,11 +20,23 @@ class ItemController(
 //    @Autowired
 //    lateinit var repository: ItemRepository
 
-    @GetMapping("{companyId}")
-    fun getByCompanyId(@PathVariable companyId: String): Flux<Item> = itemService.findByCompanyId(companyId)
+    @GetMapping(params = ["companyId"])
+    fun getByCompanyId(@RequestParam companyId: String) = itemService.findByCompanyId(companyId)
+
+    @GetMapping
+    fun getAll() = itemService.findAll()
+
+    @GetMapping(params = ["name"])
+    fun findByName(@RequestParam name: String) = itemService.findByName(name)
+
+    @GetMapping(params = ["id"])
+    fun getDifference(@RequestParam id: String)  = itemService.findDifference(id)
+
+    @GetMapping("{id}")
+    fun getById(@PathVariable id: String)  = itemService.findById(id)
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun save(@RequestBody item: Item): Mono<Item> = itemService.save(item)
+    fun save(@RequestBody item: Item) = itemService.save(item)
 
 }

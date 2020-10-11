@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 @RestController
@@ -18,14 +19,17 @@ class UserController(
 //    @Autowired
 //    lateinit var UserRepository: UserRepository
 
-    @GetMapping()
-    fun getByLogin(@RequestParam login: String): Mono<User> = userService.findByLogin(login)
+    @GetMapping(params = ["login"])
+    fun getByLogin(@RequestParam login: String) = userService.findByLogin(login)
+
+    @GetMapping
+    fun getAll() = userService.findAll()
 
     @GetMapping("{id}")
-    fun getById(@PathVariable id: String): Mono<User> = userService.getById(id)
+    fun getById(@PathVariable id: String) = userService.getById(id)
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun save(@RequestBody user: User): Mono<User> = userService.save(user)
+    fun save(@RequestBody user: User) = userService.save(user)
 
 }

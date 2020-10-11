@@ -7,7 +7,7 @@ import reactor.core.publisher.Mono
 
 interface ItemRepository : ReactiveCrudRepository<Item, String> {
 
-    fun findByName(name: String): Mono<Item>
+    fun findByName(name: String): Flux<Item>
     fun findByCompanyId(companyId: String): Flux<Item>
 
 }

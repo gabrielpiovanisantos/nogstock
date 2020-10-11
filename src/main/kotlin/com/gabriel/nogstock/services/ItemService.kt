@@ -13,9 +13,13 @@ class ItemService(
 
 
     fun save(item: Item): Mono<Item> = itemRepository.save(item)
-    fun findByName(name: String): Mono<Item> = itemRepository.findByName(name)
-    fun findDifference(item: Item): Int = item.currentQuantity - item.neededQuantity
-    fun findByCompanyId(companyId: String): Flux<Item> = itemRepository.findByCompanyId(companyId)
+    fun findByName(name: String): Flux<Item> = itemRepository.findByName(name)
+    fun findDifference(id: String): Mono<Int> {
+        return itemRepository.findById(id).map { it.neededQuantity - it.currentQuantity }
+    }
 
+    fun findByCompanyId(companyId: String): Flux<Item> = itemRepository.findByCompanyId(companyId)
+    fun findAll(): Flux<Item> = itemRepository.findAll()
+    fun findById(id: String): Mono<Item> = itemRepository.findById(id)
 
 }
