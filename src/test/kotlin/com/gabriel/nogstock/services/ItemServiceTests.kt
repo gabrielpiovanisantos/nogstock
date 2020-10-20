@@ -18,7 +18,7 @@ class ItemServiceTests {
 
     @BeforeAll
     fun setUp() {
-        val item = Item(5, 10, "rice", companyId = null)
+        val item = Item(5, 10, "rice", companyId = null, id = "1")
         itemService.save(item).then().block()
 
     }
@@ -28,14 +28,14 @@ class ItemServiceTests {
         itemService.itemRepository.deleteAll().then().block()
     }
 
-//    @Test
-//    fun `find difference between quantities`() {
-//        StepVerifier.create(itemService.findByName("rice"))
-//                .consumeNextWith {
-//                    run {
-//                        Assertions.assertThat(itemService.findDifference(it)).isEqualTo(-5)
-//                    }
-//                }.verifyComplete()
-//    }
+    @Test
+    fun `find difference between quantities of an item`() {
+        StepVerifier.create(itemService.findDifference("1"))
+                .consumeNextWith {
+                    run {
+                        Assertions.assertThat(it == 5)
+                    }
+                }.verifyComplete()
+    }
 
 }

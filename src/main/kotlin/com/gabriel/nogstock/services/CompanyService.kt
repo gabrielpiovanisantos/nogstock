@@ -13,11 +13,10 @@ class CompanyService(
 
 ) {
 
-
     fun save(company: Company): Mono<Company> {
         //TODO try to avoid the block() method because its breaks the reactiveness
 
-        var companyTest = companyRepository.findByDocument(company.document)
+        val companyTest = companyRepository.findByDocument(company.document)
                 companyTest.flatMap { companyTmp ->
                     if (companyTmp.document != company.document) {
                         companyRepository.save<Company?>(company)
