@@ -12,9 +12,9 @@ import reactor.kotlin.test.test
 
 @DataMongoTest
 class CompanyRepositoryTests {
+
     @Autowired
     lateinit var companyRepository: CompanyRepository
-
 
     @BeforeAll
     fun setUp() {

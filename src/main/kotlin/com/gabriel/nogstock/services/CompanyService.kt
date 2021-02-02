@@ -10,7 +10,6 @@ import reactor.core.publisher.Mono
 @Service
 class CompanyService(
         val companyRepository: CompanyRepository
-
 ) {
 
     fun save(company: Company): Mono<Company> {
