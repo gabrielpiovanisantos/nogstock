@@ -15,15 +15,13 @@ class CompanyService(
     fun save(company: Company): Mono<Company> {
         //TODO try to avoid the block() method because its breaks the reactiveness
 
-        val companyTest = companyRepository.findByDocument(company.document)
-                companyTest.flatMap { companyTmp ->
-                    if (companyTmp.document != company.document) {
-                        companyRepository.save<Company?>(company)
-                    } else {
-                        Mono.error(DocumentExistsException("similar doc"))
-                    }
-                }
-        return companyTest
+        return companyRepository.findByDocument(company.document).flatMap { companyTmp ->
+            if (companyTmp == null) {
+                companyRepository.save(company)
+            } else {
+                Mono.error(DocumentExistsException("similar doc"))
+            }
+        }
     }
 
     fun findByName(name: String): Mono<Company> = companyRepository.findByName(name)
