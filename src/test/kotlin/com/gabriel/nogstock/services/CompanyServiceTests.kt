@@ -32,19 +32,18 @@ class CompanyServiceTests {
 
     @AfterAll
     fun tearDown() {
-        companyService.companyRepository.deleteAll().then().block()
-        userService.userRepository.deleteAll().then().block()
+        companyService.repository.deleteAll().then().block()
+        userService.repository.deleteAll().then().block()
     }
 
     @Test
     fun `find by name`() {
         val name = "test"
-        companyService.findByName(name).test()
-                .consumeNextWith {
-                    run {
-                        Assertions.assertThat(it.name).isEqualTo("test")
-                    }
-                }.verifyComplete()
+        companyService.findByName(name).test().consumeNextWith {
+                run {
+                    Assertions.assertThat(it.name).isEqualTo("test")
+                }
+            }.verifyComplete()
     }
 
 

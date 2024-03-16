@@ -30,7 +30,7 @@ class UserServiceTests {
 
     @AfterAll
     fun tearDown() {
-        userService.userRepository.deleteAll().then().block()
+        userService.repository.deleteAll().then().block()
     }
 
     @Test

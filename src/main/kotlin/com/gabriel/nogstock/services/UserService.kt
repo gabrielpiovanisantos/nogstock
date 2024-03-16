@@ -2,31 +2,27 @@ package com.gabriel.nogstock.services
 
 import com.gabriel.nogstock.entities.User
 import com.gabriel.nogstock.repositories.UserRepository
-import org.springframework.beans.factory.annotation.Autowired
+import com.gabriel.nogstock.utils.DocumentExistsException
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
+private const val ALREADY_A_USER_WITH_THE_DOCUMENT = "There is already a user with the document"
+
 @Service
 class UserService(
-        val userRepository: UserRepository
+    val repository: UserRepository
 ) {
+    fun save(user: User): Mono<User> =
+        repository.findByDocument(user.document).flatMap<User> {
+            Mono.error<User>(DocumentExistsException("$ALREADY_A_USER_WITH_THE_DOCUMENT${user.document}"))
+        }.switchIfEmpty(
+            repository.save(user)
+        )
 
+    fun getById(id: String): Mono<User> = repository.findById(id)
 
-    fun save(user: User): Mono<User> {
-//        val verifyUserLogin = userRepository.findByLogin(user.login)
-//        val blockedUserLogin = verifyUserLogin.block()
-//        if (blockedUserLogin != null && blockedUserLogin.login == user.login) throw Exception("the login must be unique")
-//        val verifyUserDocument = userRepository.findByDocument(user.document)
-//        val blockedUserDocument = verifyUserDocument.block()
-//        if (blockedUserDocument != null && blockedUserDocument.document == user.document) throw Exception("the document must be unique")
-        return userRepository.save(user)
-
-    }
-
-    fun getById(id: String): Mono<User> = userRepository.findById(id)
-
-    fun findByLogin(login: String): Mono<User> = userRepository.findByLogin(login)
-    fun findAll(): Flux<User> = userRepository.findAll()
+    fun findByLogin(login: String): Mono<User> = repository.findByLogin(login)
+    fun findAll(): Flux<User> = repository.findAll()
 
 }
