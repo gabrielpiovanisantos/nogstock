@@ -3,7 +3,8 @@ package com.gabriel.nogstock.services
 import com.gabriel.nogstock.entities.Address
 import com.gabriel.nogstock.entities.Company
 import com.gabriel.nogstock.repositories.CompanyRepository
-import org.assertj.core.api.Assertions
+import com.gabriel.nogstock.utils.DocumentExistsException
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -11,11 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import reactor.kotlin.test.test
 
+private const val DOCUMENT = "210381280"
+
 @SpringBootTest
 class CompanyServiceTests {
 
     @Autowired
-    lateinit var companyService: CompanyService
+    lateinit var service: CompanyService
 
     @Autowired
     lateinit var companyRepository: CompanyRepository
@@ -23,43 +26,38 @@ class CompanyServiceTests {
     @Autowired
     lateinit var userService: UserService
 
+    private val address1: Address
+        get() {
+            val address = Address("18081260", "gentil", "sorocaba", "sp", 121)
+            return address
+        }
+
+
     @BeforeAll
     fun setUp() {
-        val address = Address("18081260", "gentil", "sorocaba", "sp", 121)
-        val company = Company("test", address, "210381280", "1")
+        val company = Company("test", address1, DOCUMENT, "1")
         companyRepository.save(company).then().block()
     }
 
     @AfterAll
     fun tearDown() {
-        companyService.repository.deleteAll().then().block()
+        service.repository.deleteAll().then().block()
         userService.repository.deleteAll().then().block()
     }
 
     @Test
     fun `find by name`() {
         val name = "test"
-        companyService.findByName(name).test().consumeNextWith {
-                run {
-                    Assertions.assertThat(it.name).isEqualTo("test")
-                }
-            }.verifyComplete()
-    }
-
-
-    @Test
-    fun `verify two identical documents`() {
-        val address = Address("18081260", "gentil", "sorocaba", "sp", 121)
-        val company = Company("test", address, "210381280", "1")
-//        val error:Mono<Company> = Mono.error(DocumentExistsException("similar docs"))
-//        val companyTest = companyService.save(company)
-//        assertEquals(error, exception)
-//        println(exception.block().toString())
-        companyService.save(company).test().consumeNextWith() {
+        service.findByName(name).test().consumeNextWith {
             run {
-                println(it.document)
+                assertThat(it.name).isEqualTo(name)
             }
         }.verifyComplete()
+    }
+    @Test
+    fun `given an already existing documenting WHEN saving another company THEN throw proper exception`() {
+        val company = Company("test", address1, DOCUMENT, "1")
+        service.save(company).subscribe { assertThat(it).isInstanceOf(DocumentExistsException::class.java) }
     }
 
 }
