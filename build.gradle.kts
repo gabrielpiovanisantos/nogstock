@@ -5,6 +5,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 val slf4jVersion: String = "2.0.9"
 val ogmVersion: String = "5.4.1.Final"
 val lombokVersion: String = "1.18.32"
+val mockkVersion: String = "1.13.10"
 
 plugins {
     id("org.springframework.boot") version "3.2.4"
@@ -40,7 +41,7 @@ dependencies {
     }
     testImplementation("io.projectreactor:reactor-test")
     testImplementation("org.projectlombok:lombok:${lombokVersion}")
-    testImplementation("io.mockk:mockk")
+    testImplementation("io.mockk:mockk:${mockkVersion}")
     //LOMBOK Dependencies
     annotationProcessor("org.projectlombok:lombok")
     compileOnly("org.projectlombok:lombok")
