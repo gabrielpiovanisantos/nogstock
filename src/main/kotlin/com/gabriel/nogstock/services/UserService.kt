@@ -14,7 +14,7 @@ class UserService(
     val repository: UserRepository
 ) {
     fun save(user: User): Mono<User> =
-        repository.findByDocument(user.document).flatMap<User> {
+        repository.findByDocument(user.document).flatMap {
             Mono.error<User>(DocumentExistsException("$ALREADY_A_USER_WITH_THE_DOCUMENT${user.document}"))
         }.switchIfEmpty(
             repository.save(user)

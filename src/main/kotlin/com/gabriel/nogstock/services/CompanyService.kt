@@ -17,7 +17,7 @@ class CompanyService(
     val repository: CompanyRepository
 ) {
     fun save(company: Company): Mono<Company> =
-        repository.findByDocument(company.document).flatMap<Company> {
+        repository.findByDocument(company.document).flatMap {
             Mono.error<Company>(DocumentExistsException("$ALREADY_A_COMPANY_WITH_THE_DOCUMENT${company.document}"))
         }.switchIfEmpty(
             repository.save(company)

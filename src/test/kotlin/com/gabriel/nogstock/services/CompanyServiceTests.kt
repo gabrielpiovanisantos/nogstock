@@ -3,61 +3,55 @@ package com.gabriel.nogstock.services
 import com.gabriel.nogstock.entities.Address
 import com.gabriel.nogstock.entities.Company
 import com.gabriel.nogstock.repositories.CompanyRepository
+import com.gabriel.nogstock.services.CompanyServiceTests.CompanyServiceTests.DOCUMENT
+import com.gabriel.nogstock.services.CompanyServiceTests.CompanyServiceTests.NAME
 import com.gabriel.nogstock.utils.DocumentExistsException
+import io.mockk.every
+import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
+import reactor.core.publisher.Mono
 import reactor.kotlin.test.test
 
-private const val DOCUMENT = "210381280"
 
-@SpringBootTest
+@Suppress("ReactiveStreamsUnusedPublisher")
 class CompanyServiceTests {
 
-    @Autowired
-    lateinit var service: CompanyService
+    private lateinit var service: CompanyService
+    private lateinit var repository: CompanyRepository
+    private lateinit var company: Company
+    private lateinit var address: Address
 
-    @Autowired
-    lateinit var companyRepository: CompanyRepository
-
-    @Autowired
-    lateinit var userService: UserService
-
-    private val address1: Address
-        get() {
-            val address = Address("18081260", "gentil", "sorocaba", "sp", 121)
-            return address
-        }
-
+    object CompanyServiceTests {
+        const val DOCUMENT = "210381280"
+        const val NAME = "test"
+    }
 
     @BeforeAll
     fun setUp() {
-        val company = Company("test", address1, DOCUMENT, "1")
-        companyRepository.save(company).then().block()
-    }
-
-    @AfterAll
-    fun tearDown() {
-        service.repository.deleteAll().then().block()
-        userService.repository.deleteAll().then().block()
+        repository = mockk(relaxed = true)
+        address = Address("18081260", "gentil", "sorocaba", "sp", 121)
+        company = Company(NAME, address, DOCUMENT, "1")
+        service = CompanyService(repository)
     }
 
     @Test
     fun `find by name`() {
-        val name = "test"
-        service.findByName(name).test().consumeNextWith {
+        every { repository.findByName(NAME) } returns Mono.just(company)
+        service.findByName(NAME).test().consumeNextWith {
             run {
-                assertThat(it.name).isEqualTo(name)
+                assertThat(it.name).isEqualTo(NAME)
             }
         }.verifyComplete()
     }
+
     @Test
     fun `given an already existing documenting WHEN saving another company THEN throw proper exception`() {
-        val company = Company("test", address1, DOCUMENT, "1")
-        service.save(company).subscribe { assertThat(it).isInstanceOf(DocumentExistsException::class.java) }
+        every { repository.findByDocument(DOCUMENT) } returns Mono.just(company)
+        val company = Company(NAME, address, DOCUMENT, "1")
+        service.save(company).test().consumeErrorWith {
+                assertThat(it).isInstanceOf(DocumentExistsException::class.java)
+            }.verify()
     }
-
 }
