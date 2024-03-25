@@ -1,15 +1,21 @@
+import org.gradle.api.JavaVersion.VERSION_17
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+//Properties
+val slf4jVersion: String = "2.0.9"
+val ogmVersion: String = "5.4.1.Final"
+val lombokVersion: String = "1.18.32"
+
 plugins {
-    id("org.springframework.boot") version "2.3.0.RELEASE"
-    id("io.spring.dependency-management") version "1.0.9.RELEASE"
-    kotlin("jvm") version "1.3.72"
-    kotlin("plugin.spring") version "1.3.72"
+    id("org.springframework.boot") version "3.2.4"
+    id("io.spring.dependency-management") version "1.1.4"
+    id("org.jetbrains.kotlin.jvm") version "1.9.23"
+    id("org.jetbrains.kotlin.plugin.spring") version "1.9.23"
 }
 
 group = "com.gabriel"
 version = "0.0.1-SNAPSHOT"
-java.sourceCompatibility = JavaVersion.VERSION_11
+java.sourceCompatibility = VERSION_17
 
 repositories {
     mavenCentral()
@@ -21,10 +27,11 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb-reactive")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
+    implementation("org.projectlombok:lombok:${lombokVersion}")
     implementation("io.projectreactor:reactor-tools")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation("org.hibernate.ogm:hibernate-ogm-bom:5.4.1.Final")
+    implementation("org.hibernate.ogm:hibernate-ogm-bom:${ogmVersion}")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
     implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
@@ -32,7 +39,13 @@ dependencies {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }
     testImplementation("io.projectreactor:reactor-test")
+    testImplementation("org.projectlombok:lombok:${lombokVersion}")
 
+    //LOMBOK Dependencies
+    annotationProcessor("org.projectlombok:lombok")
+    compileOnly("org.projectlombok:lombok")
+    testAnnotationProcessor("org.projectlombok:lombok")
+    testCompileOnly("org.projectlombok:lombok")
 }
 
 tasks.withType<Test> {
@@ -42,6 +55,6 @@ tasks.withType<Test> {
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "11"
+        jvmTarget = "17"
     }
 }
